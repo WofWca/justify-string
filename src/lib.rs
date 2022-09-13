@@ -16,8 +16,10 @@ mod tests {
         ];
 
         for &(input, line_width, expected) in &test_cases {
-            println!("input: '{}'", input);
-            assert_eq!(transform(input, line_width), expected);
+            assert_eq!(
+                transform(input, line_width), expected,
+                "input: \"{}\", width: {}", input, line_width
+            );
         }
     }
 }

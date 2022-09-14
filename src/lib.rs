@@ -1,24 +1,26 @@
-// TODO refactor: "Examples" is written in JS, not Rust.
-
 /// Assumes the first word of the line is already at the start of the line,
 /// without spaces following it.
 ///
 /// # Examples
 ///
 /// ```
-/// out = "123";
-/// finalize_current_line(out, ["12", "1234"], 3);
-/// out == "123   12  1234"
+/// use line_adjustment::finalize_current_line;
+///
+/// let mut out = String::from("123");
+/// finalize_current_line(&mut out, &mut vec!["12", "1234"], 3);
+/// assert_eq!(out, String::from("123   12  1234"));
 /// ```
 ///
 /// If `words_after_first` is empty, it simply appends extra spaces to the first word.
 ///
 /// ```
-/// out = "123";
-/// finalize_current_line(out, [], 2);
-/// out == "123  "
+/// use line_adjustment::finalize_current_line;
+///
+/// let mut out = String::from("123");
+/// finalize_current_line(&mut out, &mut vec![], 2);
+/// assert_eq!(out, String::from("123  "));
 /// ```
-fn finalize_current_line(
+pub fn finalize_current_line(
     output: &mut String,
     words_after_first: &mut Vec::<&str>,
     num_extra_spaces: u32,
@@ -67,6 +69,24 @@ fn finalize_current_line(
     };
 }
 
+/**
+# Examples
+
+```
+use line_adjustment::justify;
+
+assert_eq!(
+    justify("123 12 123456789abc", 8),
+    concat!(
+        "123   12\n",
+        "12345678\n",
+        "9abc    ",
+    )
+);
+```
+
+See tests for more.
+*/
 pub fn justify(input: &str, line_width: u32) -> String {
     // TODO perf: do we need optimizations in case `line_width >= input.chars()len()`?
     // In case `line_width <= 2`? In case input words are guaranteed to be separated by only a

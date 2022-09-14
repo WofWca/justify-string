@@ -69,7 +69,9 @@ fn finalize_current_line(
 
 pub fn transform(input: &str, line_width: u32) -> String {
     // TODO perf: do we need optimizations in case `line_width >= input.chars()len()`?
-    // In case `line_width <= 2`? Maybe with an argument, or a config var.
+    // In case `line_width <= 2`? In case input words are guaranteed to be separated by only a
+    // single space?
+    //  Maybe with an argument, or a config var.
 
     // TODO how about `split_ascii_whitespace`?
     let mut words = input.split_whitespace();

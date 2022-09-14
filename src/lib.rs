@@ -67,7 +67,7 @@ fn finalize_current_line(
     };
 }
 
-pub fn transform(input: &str, line_width: u32) -> String {
+pub fn justify(input: &str, line_width: u32) -> String {
     // TODO perf: do we need optimizations in case `line_width >= input.chars()len()`?
     // In case `line_width <= 2`? In case input words are guaranteed to be separated by only a
     // single space?
@@ -158,7 +158,7 @@ pub fn transform(input: &str, line_width: u32) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::transform;
+    use super::justify;
 
     #[test]
     fn simple() {
@@ -190,7 +190,7 @@ mod tests {
 
         for &(input, line_width, expected) in &test_cases {
             assert_eq!(
-                transform(input, line_width), expected,
+                justify(input, line_width), expected,
                 "input: \"{}\", width: {}", input, line_width
             );
         }

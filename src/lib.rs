@@ -78,8 +78,8 @@ use justify_string::justify;
 assert_eq!(
     justify("123 12 123456789abc", 8),
     concat!(
-        "123   12\n",
-        "12345678\n",
+        "123   12", "\n",
+        "12345678", "\n",
         "9abc    ",
     )
 );

@@ -4,7 +4,7 @@
 /// # Examples
 ///
 /// ```
-/// use line_adjustment::finalize_current_line;
+/// use justify_string::finalize_current_line;
 ///
 /// let mut out = String::from("123");
 /// finalize_current_line(&mut out, &mut vec!["12", "1234"], 3);
@@ -14,7 +14,7 @@
 /// If `words_after_first` is empty, it simply appends extra spaces to the first word.
 ///
 /// ```
-/// use line_adjustment::finalize_current_line;
+/// use justify_string::finalize_current_line;
 ///
 /// let mut out = String::from("123");
 /// finalize_current_line(&mut out, &mut vec![], 2);
@@ -73,7 +73,7 @@ pub fn finalize_current_line(
 # Examples
 
 ```
-use line_adjustment::justify;
+use justify_string::justify;
 
 assert_eq!(
     justify("123 12 123456789abc", 8),

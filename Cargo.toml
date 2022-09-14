@@ -1,7 +1,12 @@
 [package]
-name = "line_adjustment"
-version = "0.1.0"
-authors = [""]
+name = "justify-string"
+description = "Justify a string (so that it consists of lines of the same width)"
+version = "1.0.0"
+authors = ["WofWca <wofwca@protonmail.com>"]
+license = "AGPL-3.0-or-later"
+repository = "https://github.com/WofWca/justify-string"
+keywords = ["justify", "string", "line", "width"]
+categories = ["text-editors", "value-formatting"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

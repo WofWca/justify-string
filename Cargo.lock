@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "line_adjustment"
-version = "0.1.0"
+name = "justify-string"
+version = "1.0.0"

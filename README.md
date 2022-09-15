@@ -1,3 +1,20 @@
+### Example
+
+Input:
+
+```
+"Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua", 35
+```
+
+Output:
+
+```
+Lorem    ipsum   dolor   sit   amet
+consectetur  adipiscing elit sed do
+eiusmod tempor incididunt ut labore
+et      dolore     magna     aliqua
+```
+
 ### Disclaimer
 
 * I'm a noobie-boobie with Rust

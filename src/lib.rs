@@ -119,30 +119,23 @@ pub fn justify(input: &str, line_width: u32) -> String {
     loop {
         // New line, new word.
         let mut line_remaining_capacity_chars = line_width;
-        let mut curr_word_iter = curr_word.chars();
 
         // Put the first word at the beginning of the line.
         // If `line_width` is exceeded, add a line break.
         // TODO perf: maybe it's guaranteed by the caller that it's not possible for any word
         // to be longer than `line_width`? Add a parameter or a config var.
+        // TODO perf: Each word consists of at least one char, so no need to check if the first one
+        // is `Some`.
+        for ch in curr_word.chars() {
+            // TODO perf: does the compiled code perform this check on the first iteration?
+            // Could adding an assert that `line_width > 0` help?
+            if line_remaining_capacity_chars <= 0 {
+                res.push('\n');
+                line_remaining_capacity_chars = line_width;
+            }
 
-        // Each word consists of at least one char, so it's ok to `unwrap()`.
-        // TODO perf: `unwrap_unchecked`?
-        let mut ch = curr_word_iter.next().unwrap();
-        'first_word_of_line: loop {
             res.push(ch);
             line_remaining_capacity_chars -= 1;
-
-            match curr_word_iter.next() {
-                None => break 'first_word_of_line,
-                Some(c) => {
-                    ch = c;
-                    if line_remaining_capacity_chars <= 0 {
-                        res.push('\n');
-                        line_remaining_capacity_chars = line_width;
-                    }
-                }
-            }
         }
 
         // The first word of the line is put, now the following ones.

@@ -22,7 +22,7 @@
 /// ```
 pub fn finalize_current_line(
     output: &mut String,
-    words_after_first: &mut Vec::<&str>,
+    words_after_first: &Vec::<&str>,
     num_extra_spaces: u32,
 ) {
     let append_spaces = |s: &mut String, num_spaces: u32| {
@@ -153,7 +153,7 @@ pub fn justify(input: &str, line_width: u32) -> String {
         first_word_of_line = 'words_after_first_of_line: loop {
             let word = match words.next() {
                 None => {
-                    finalize_current_line(&mut res, &mut words_after_first, line_remaining_capacity_chars);
+                    finalize_current_line(&mut res, &words_after_first, line_remaining_capacity_chars);
                     return res;
                 },
                 Some(w) => w,
@@ -169,7 +169,7 @@ pub fn justify(input: &str, line_width: u32) -> String {
             }
         };
 
-        finalize_current_line(&mut res, &mut words_after_first, line_remaining_capacity_chars);
+        finalize_current_line(&mut res, &words_after_first, line_remaining_capacity_chars);
         // TODO refactor: Is there a better way? Can we just declare it for each line
         // without reallocating?
         words_after_first.clear();

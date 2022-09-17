@@ -156,16 +156,14 @@ pub fn justify(input: &str, line_width: u32) -> String {
                 // We'll put this word on a new line.
                 finalize_current_line(&mut res, &mut words_after_first, line_remaining_capacity_chars);
                 res.push('\n');
+                // TODO refactor: Is there a better way? Can we just declare it for each line
+                // without reallocating?
+                words_after_first.clear();
                 break 'words_after_first_of_line;
                 // TODO refactor: would be cool to somehow ensure that `curr_word` is not used in
                 // this case and is to be handled in the next iteration of the loop.
             }
-
         }
-
-        // TODO refactor: Is there a better way? Can we just declare it for each line
-        // without reallocating?
-        words_after_first.clear();
     }
 }
 

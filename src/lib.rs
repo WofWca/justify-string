@@ -157,7 +157,7 @@ pub fn justify(input: &str, line_width: u32) -> String {
         }
 
         // The first word of the line is put, now the following ones.
-        'words_after_first_of_line: loop {
+        first_word_of_line = 'words_after_first_of_line: loop {
             let word = match words.next() {
                 None => {
                     finalize_current_line(&mut res, &mut words_after_first, line_remaining_capacity_chars);
@@ -172,15 +172,15 @@ pub fn justify(input: &str, line_width: u32) -> String {
                 &mut line_remaining_capacity_chars
             ) {
                 // We'll put this word on a new line.
-                finalize_current_line(&mut res, &mut words_after_first, line_remaining_capacity_chars);
-                res.push('\n');
-                // TODO refactor: Is there a better way? Can we just declare it for each line
-                // without reallocating?
-                words_after_first.clear();
-                first_word_of_line = failed_to_append;
-                break 'words_after_first_of_line;
+                break 'words_after_first_of_line failed_to_append;
             }
-        }
+        };
+
+        finalize_current_line(&mut res, &mut words_after_first, line_remaining_capacity_chars);
+        res.push('\n');
+        // TODO refactor: Is there a better way? Can we just declare it for each line
+        // without reallocating?
+        words_after_first.clear();
     }
 }
 

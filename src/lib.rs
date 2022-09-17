@@ -170,10 +170,10 @@ pub fn justify(input: &str, line_width: u32) -> String {
         };
 
         finalize_current_line(&mut res, &mut words_after_first, line_remaining_capacity_chars);
-        res.push('\n');
         // TODO refactor: Is there a better way? Can we just declare it for each line
         // without reallocating?
         words_after_first.clear();
+        res.push('\n');
     }
 }
 

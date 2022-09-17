@@ -100,7 +100,7 @@ pub fn justify(input: &str, line_width: u32) -> String {
     // starting a new line, we can start copying chars of the next word
     // right away, without trying to first find where it ends.
     // Same for the next `words.next()` below.
-    let mut curr_word = match words.next() {
+    let mut first_word_of_line = match words.next() {
         None => return "".to_string(),
         Some(w) => w,
     };
@@ -116,6 +116,24 @@ pub fn justify(input: &str, line_width: u32) -> String {
         let max_words_per_line = (line_width + 1) / 2;
         Vec::<&str>::with_capacity(max_words_per_line as usize - 1)
     };
+    /// If the word fits, appends it to `words_after_first` and returns `Ok()`,
+    /// if it doesn't, returns `Error` with that word.
+    fn try_append_word_to_line<'a>(
+        words_after_first: &mut Vec<&'a str>,
+        word: &'a str,
+        line_remaining_capacity_chars: &mut u32,
+    ) -> Result<(), &'a str> {
+        // `+ 1` because there needs to be a space before this word.
+        let requred_capacity_to_append_curr_word = word.chars().count() as u32 + 1;
+        if requred_capacity_to_append_curr_word <= *line_remaining_capacity_chars {
+            words_after_first.push(word);
+            *line_remaining_capacity_chars -= requred_capacity_to_append_curr_word;
+            Ok(())
+        } else {
+            Err(word)
+        }
+    }
+
     loop {
         // New line, new word.
         let mut line_remaining_capacity_chars = line_width;
@@ -126,7 +144,7 @@ pub fn justify(input: &str, line_width: u32) -> String {
         // to be longer than `line_width`? Add a parameter or a config var.
         // TODO perf: Each word consists of at least one char, so no need to check if the first one
         // is `Some`.
-        for ch in curr_word.chars() {
+        for ch in first_word_of_line.chars() {
             // TODO perf: does the compiled code perform this check on the first iteration?
             // Could adding an assert that `line_width > 0` help?
             if line_remaining_capacity_chars <= 0 {
@@ -140,28 +158,27 @@ pub fn justify(input: &str, line_width: u32) -> String {
 
         // The first word of the line is put, now the following ones.
         'words_after_first_of_line: loop {
-            curr_word = match words.next() {
+            let word = match words.next() {
                 None => {
                     finalize_current_line(&mut res, &mut words_after_first, line_remaining_capacity_chars);
                     return res;
                 },
                 Some(w) => w,
             };
-            // `+ 1` because there needs to be a space before this word.
-            let requred_capacity_to_append_curr_word = curr_word.chars().count() as u32 + 1;
-            if requred_capacity_to_append_curr_word <= line_remaining_capacity_chars {
-                words_after_first.push(curr_word);
-                line_remaining_capacity_chars -= requred_capacity_to_append_curr_word;
-            } else {
+
+            if let Err(failed_to_append) = try_append_word_to_line(
+                &mut words_after_first,
+                word,
+                &mut line_remaining_capacity_chars
+            ) {
                 // We'll put this word on a new line.
                 finalize_current_line(&mut res, &mut words_after_first, line_remaining_capacity_chars);
                 res.push('\n');
                 // TODO refactor: Is there a better way? Can we just declare it for each line
                 // without reallocating?
                 words_after_first.clear();
+                first_word_of_line = failed_to_append;
                 break 'words_after_first_of_line;
-                // TODO refactor: would be cool to somehow ensure that `curr_word` is not used in
-                // this case and is to be handled in the next iteration of the loop.
             }
         }
     }

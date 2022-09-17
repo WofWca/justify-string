@@ -56,17 +56,10 @@ pub fn finalize_current_line(
         append_spaces_and_word(big_gap_size, words.next().unwrap());
     }
     // Now small gaps.
-    // It's guaranteed that there's at least one element left, so it's ok to `unwrap`.
-    // TODO perf: `unwrap_unchecked()`. If not, maybe just put it inside the loop to save
-    // a few lines.
-    let mut word = words.next().unwrap();
-    loop {
+    // TODO perf: It's guaranteed that there's at least one element left, so `unwrap_unchecked`?
+    for word in words {
         append_spaces_and_word(small_gap_size, word);
-        word = match words.next() {
-            None => break,
-            Some(w) => w,
-        };
-    };
+    }
 }
 
 /**

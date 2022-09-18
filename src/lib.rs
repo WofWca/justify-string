@@ -104,6 +104,8 @@ pub fn justify(input: &str, line_width: u32) -> String {
     // TODO perf: how about we instead use an array on the stack? This would put a cap
     // on `line_width` though.
     // TODO perf: if not, maybe don't allocate the max theoretical capacity?
+    // Also, it's guaranteed that this capacity won't even be exceeded, so `push` doesn't
+    // have to check if it needs to be expanded.
     let mut words_after_first = {
         // TODO refactor: add tests to check if this is calculated correctly?
         let max_words_per_line = (line_width + 1) / 2;

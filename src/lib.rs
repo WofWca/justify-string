@@ -79,8 +79,15 @@ assert_eq!(
 ```
 
 See tests for more.
+
+# Panics
+
+If `line_width < 1`
 */
 pub fn justify(input: &str, line_width: u32) -> String {
+    // TODO consider making the `line_width` parameter of type `NonZeroU32`.
+    assert!(line_width >= 1);
+
     // TODO perf: do we need optimizations in case `line_width >= input.chars()len()`?
     // In case `line_width <= 2`? In case input words are guaranteed to be separated by only a
     // single space?
